@@ -5,6 +5,7 @@ from kivy.app import App
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
 from kivy.clock import Clock
+from kivy.properties import StringProperty
 from os.path import dirname, join, isfile, exists
 
 class FooScreen(Screen):
@@ -15,6 +16,8 @@ class FooScreen(Screen):
         return super(FooScreen, self).add_widget(*args)
 
 class FooApp(App):
+    imp_text = StringProperty("Should change to text from id: magic_text")
+
     def build(self):
         self.title = 'Foo'
 
@@ -61,6 +64,11 @@ class FooApp(App):
         self.screen_boxlayout = self.screen_widget.ids['content']  # proper id content in BoxLayout in ScreenManager?
         print("Screenboxlayout ids:\n{}".format(self.screen_boxlayout.ids))
 
+    def change_text(self):
+        print("Changing text")
+        # TODO get text from id: magic_text
+        # self.imp_text = text from magic_text
 
 if __name__ == '__main__':
     FooApp().run()
+

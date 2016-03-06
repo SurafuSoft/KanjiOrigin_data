@@ -13,8 +13,14 @@ BoxLayout:
 
     Label:
         id: important_text
-        size_hint_y: 0.1
-        text: "Reference between widgets test"
+        size_hint_y: 0.3
+        text: app.imp_text
+
+    Button:
+        id: magic_change
+        size_hint_y: 0.3
+        text: "Change text above to text below (after screen switch)"
+        on_press: app.change_text()
 
     ScreenManager:
         id: sm

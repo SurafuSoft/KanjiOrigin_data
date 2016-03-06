@@ -5,15 +5,9 @@
     id: magic_layout
     orientation: 'vertical'
 
-    Button:
-        id: magic_change
-        text: "Change text below to text above"
-        on_press: magic_layout.change_text()
-
     Label:
         id: magic_text
-        text: magic_layout.m_text
-
+        text: root.m_text
 
 FooScreen:
     id: magic_screen
