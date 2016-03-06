@@ -1,0 +1,22 @@
+#:kivy 1.9.0
+
+<FooScreen>:
+    BoxLayout:
+        id: content
+        orientation: 'vertical'
+        spacing: '20dp'
+        padding: '8dp'
+        size_hint: (1, 1)
+
+BoxLayout:
+    orientation: 'vertical'
+
+    Label:
+        id: important_text
+        size_hint_y: 0.1
+        text: "Reference between widgets test"
+
+    ScreenManager:
+        id: sm
+        on_current_screen:
+            idx = app.screen_names.index(args[1].name)
