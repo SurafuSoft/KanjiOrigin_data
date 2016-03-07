@@ -5,7 +5,7 @@ from kivy.app import App
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
 from kivy.clock import Clock
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, ObjectProperty
 from os.path import dirname, join, isfile, exists
 
 class FooScreen(Screen):
@@ -17,14 +17,14 @@ class FooScreen(Screen):
 
 class FooApp(App):
     imp_text = StringProperty("Should change to text from id: magic_text")
+    screen_magic = ObjectProperty()
+    magic_layout = ObjectProperty()
 
     def build(self):
         self.title = 'Foo'
 
         # References
         self.sm = self.root.ids.sm  # ScreenManager
-        #self.bcontent = self.sm.ids.content # id content in BoxLayout in ScreenManager
-        self.screen_widget = FooScreen()  # FooScreen
 
         # Setting up screens for screen manager
         self.screens = {}
@@ -56,18 +56,18 @@ class FooApp(App):
             Clock.schedule_once(lambda dt: self.create_reference())
         return screen
 
+    # Trying to get id's
     def create_reference(self):
         print("\nrefs:")
-        print("Screenmanager ids:\n{}".format(self.sm.ids))
-        #print("Screenwidget ids:\n{}".format(self.bcontent.ids))
-        print("Screenwidget ids:\n{}".format(self.screen_widget.ids))
-        self.screen_boxlayout = self.screen_widget.ids['content']  # proper id content in BoxLayout in ScreenManager?
-        print("Screenboxlayout ids:\n{}".format(self.screen_boxlayout.ids))
+        # Get screen from ScreenManager
+        self.screen_magic = self.sm.get_screen(self.screen_names[1])
+        # screen.boxlayout.magiclayout
+        self.magic_layout = self.screen_magic.children[0].children[0]
 
     def change_text(self):
-        print("Changing text")
-        # TODO get text from id: magic_text
-        # self.imp_text = text from magic_text
+        # Get text from id: magic_text
+        if self.magic_layout:
+            self.imp_text = self.magic_layout.ids['magic_text'].text
 
 if __name__ == '__main__':
     FooApp().run()

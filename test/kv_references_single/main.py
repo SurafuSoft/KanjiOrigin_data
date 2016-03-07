@@ -60,8 +60,6 @@ class FooApp(App):
 
         # Trying stuff with References, fail code
         self.sm = self.root.ids.sm  # ScreenManager
-        #self.bcontent = self.sm.ids.content # id content in BoxLayout in ScreenManager
-        self.screen_widget = FooScreen()  # FooScreen
 
         # Setting up screens for screen manager
         self.screens = {}
