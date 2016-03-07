@@ -6,11 +6,13 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from kivy.clock import Clock
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, ObjectProperty
 
 
 kv_foo = '''
 <FooScreen>:
+    id: fooscreen_id
+
     BoxLayout:
         id: content
         orientation: 'vertical'
@@ -46,8 +48,11 @@ class FooScreen(Screen):
             return self.ids.content.add_widget(*args)
         return super(FooScreen, self).add_widget(*args)
 
+
 class FooApp(App):
     imp_text = StringProperty("Should change to text from id: magic_text")
+    screen_magic = ObjectProperty()
+    magic_layout = ObjectProperty()
 
     def build(self):
         self.title = 'Foo'
@@ -86,19 +91,18 @@ class FooApp(App):
             Clock.schedule_once(lambda dt: self.create_reference())
         return screen
 
-    # Trying to get id's, fail code
+    # Trying to get id's
     def create_reference(self):
         print("\nrefs:")
-        print("Screenmanager ids:\n{}".format(self.sm.ids))
-        #print("Screenwidget ids:\n{}".format(self.bcontent.ids))
-        print("Screenwidget ids:\n{}".format(self.screen_widget.ids))
-        self.screen_boxlayout = self.screen_widget.ids['content']  # proper id content in BoxLayout in ScreenManager?
-        print("Screenboxlayout ids:\n{}".format(self.screen_boxlayout.ids))
+        # Get screen from ScreenManager
+        self.screen_magic = self.sm.get_screen(self.screen_names[1])
+        # screen.boxlayout.magiclayout
+        self.magic_layout = self.screen_magic.children[0].children[0]
 
     def change_text(self):
-        print("Changing text")
-        # TODO get text from id: magic_text
-        # self.imp_text = text from magic_text
+        # Get text from id: magic_text
+        if self.magic_layout:
+            self.imp_text = self.magic_layout.ids['magic_text'].text
 
 
 kv_mainmenu = '''
@@ -124,7 +128,8 @@ FooScreen:
     id: magic_screen
     name: 'Magic'
 
-    MagicLayout
+    MagicLayout:
+        id: testmagic
 '''
 
 
